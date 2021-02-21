@@ -1,7 +1,8 @@
 import discord
 import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 client = discord.Client()
 
 
@@ -24,4 +25,4 @@ async def on_message(msg):
     if data.startswith(('hello', 'hi', 'yo')):
         await msg.channel.send('Yo! {0}'.format(msg.author))
 
-client.run('ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho')
+client.run(os.getenv('BOT_TOKEN'))
