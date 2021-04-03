@@ -18,11 +18,12 @@ bot = commands.Bot(command_prefix='>')
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='to lasangiri'))
 
-    image_path = 'images/garlic_icon.png'
-    with open(image_path, 'rb') as f:
-        image = f.read()
-    
-    await bot.user.edit(avatar=image)
+    if bot.user.avatar == None:
+        image_path = 'images/garlic_icon.png'
+        with open(image_path, 'rb') as f:
+            image = f.read()
+        
+        await bot.user.edit(avatar=image)
     
     print(bot.user.name + ' is online.')
 
