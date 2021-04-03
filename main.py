@@ -7,7 +7,6 @@ import random
 
 
 load_dotenv()
-#client = discord.Client()
 
 bot = commands.Bot(command_prefix='>')
 
@@ -17,7 +16,14 @@ bot = commands.Bot(command_prefix='>')
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game('Listening to lasangiri'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='to lasangiri'))
+
+    image_path = 'images/garlic_icon.png'
+    with open(image_path, 'rb') as f:
+        image = f.read()
+    
+    await bot.user.edit(avatar=image)
+    
     print(bot.user.name + ' is online.')
 
 @bot.command(
@@ -25,7 +31,6 @@ async def on_ready():
     help='Greets the user using whatever argument passed.',
     )
 async def salute(ctx, arg):
-    # print(ctx.author)
     await ctx.send('{0}! {1}'.format(arg, ctx.author.mention))
 
 @bot.command(
@@ -43,27 +48,11 @@ async def send_gif(ctx, arg):
     res = requests.get(os.getenv('GIFY_API_URL'), params=body)
     if res.status_code != 200:
         await ctx.send('Oops! Something went wrong. Please try again.')
-    if len(res.json()['data']) > 0:
+    elif len(res.json()['data']) > 0:
         gif = res.json()['data'][random.randrange(0, len(res.json()['data']))]
         await ctx.send(gif['embed_url'])
     else:
         await ctx.send('No results found for keyword "{0}".'.format(arg))
 
-# @bot.event
-# async def on_message(msg):
-#     if bot.user == msg.author:
-#         return 
-#     # print(msg.author)
-#     # print(msg.content)
-#     await bot.process_commands(msg)
-
-# @bot.event
-# async def on_message(msg):
-#     await msg.channel.send('Yo! {0}'.format(msg.author))
-
-# @client.event
-# async def on_message(msg):
-#     await msg.channel.send('Yo! {0}'.format(msg.author))
-        
+# Trigger the bot.
 bot.run(os.getenv('BOT_TOKEN'))
-# client.run(os.getenv('BOT_TOKEN'))
