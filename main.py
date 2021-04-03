@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix='>')
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='to lasangiri'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='lasangiri'))
 
     if bot.user.avatar == None:
         image_path = 'images/garlic_icon.png'
