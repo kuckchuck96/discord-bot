@@ -6,7 +6,7 @@ import requests
 import random
 
 
-load_dotenv()
+# load_dotenv()
 
 bot = commands.Bot(command_prefix='>')
 
