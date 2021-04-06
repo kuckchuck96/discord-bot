@@ -55,5 +55,29 @@ async def send_gif(ctx, arg):
     else:
         await ctx.send('No results found for keyword "{0}".'.format(arg))
 
+@bot.command(
+    name='num',
+    help='Gives random number facts.'
+)
+async def number_trivia(ctx):
+    res = requests.get('http://numbersapi.com/random/trivia')
+    if res.status_code != 200:
+        await ctx.send('Oops! Something went wrong. Please try again.')
+    else:
+        await ctx.send(res.text)
+
+@bot.command(
+    name='cn',
+    help='Retrieve a random chuck joke.'
+)
+async def chuck_norris(ctx):
+    res = requests.get('https://api.chucknorris.io/jokes/random')
+    if res.status_code != 200:
+        await ctx.send('Oops! Something went wrong. Please try again.')
+    else:
+        data = res.json()
+        for i in ['icon_url', 'value']:
+            await ctx.send(data[i])
+
 # Trigger the bot.
 bot.run(os.getenv('BOT_TOKEN'))
