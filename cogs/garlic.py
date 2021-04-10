@@ -24,7 +24,7 @@ class Garlic(commands.Cog):
         body = [
             ('api_key', os.getenv('GIFY_API_KEY')),
             ('q', arg),
-            ('limit', 25),
+            ('limit', 50),
             ('lang', 'en'),
             ('rating', 'pg-13')
         ]
