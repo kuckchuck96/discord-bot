@@ -6,13 +6,18 @@ import requests
 import random
 
 
-# load_dotenv()
+load_dotenv()
 
 bot = commands.Bot(command_prefix='>')
 
-# Token: ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho
+'''
+Token (Prod): ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho
+Token (Dev): ODMwNDYwNTAzNjUzODc1NzEy.YHHAnQ.a7ciLlu-WDs8noEnYYhkwVVoKWQ
 
-# Link to add bot to server: https://discord.com/api/oauth2/authorize?client_id=813060222045651014&permissions=518208&scope=bot
+Link to add bot to server (Prod): https://discord.com/api/oauth2/authorize?client_id=813060222045651014&permissions=518208&scope=bot
+
+Link to add bot to server (Dev): https://discord.com/api/oauth2/authorize?client_id=830460503653875712&permissions=519232&scope=bot
+'''
 
 @bot.event
 async def on_ready():
