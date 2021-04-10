@@ -61,6 +61,25 @@ class Garlic(commands.Cog):
             for i in ['icon_url', 'value']:
                 await ctx.send(data[i])
 
+    @commands.command(
+        aliases=['slots', 'slotmachine'],
+        help='Pull the lever of the invisible SLOT MACHINE'
+    )       
+    async def slot_machine(self, ctx):
+        emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
+        a = random.choice(emojis)
+        b = random.choice(emojis)
+        c = random.choice(emojis)
+
+        user = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
+
+        if (a == b == c):
+            await ctx.send(f"{user} You won! 🎉")
+        elif (a == b) or (a == c) or (b == c):
+            await ctx.send(f"{user} not good enough, sucker! 🎉")
+        else:
+            await ctx.send(f"{user} wah wah wah 😢")
+
 def setup(bot):
     bot.add_cog(Garlic(bot))                  
         
