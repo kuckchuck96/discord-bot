@@ -62,26 +62,6 @@ class Garlic(commands.Cog):
                 await ctx.send(data[i])
 
     @commands.command(
-        name='slotmachine',
-        aliases=['slots'],
-        help='Pull the lever of the invisible SLOT MACHINE'
-    )       
-    async def slot_machine(self, ctx):
-        emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
-        a = random.choice(emojis)
-        b = random.choice(emojis)
-        c = random.choice(emojis)
-
-        user = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
-
-        if (a == b == c):
-            await ctx.send(f"{user} You won! 🎉")
-        elif (a == b) or (a == c) or (b == c):
-            await ctx.send(f"{user} not good enough, sucker! 🎉")
-        else:
-            await ctx.send(f"{user} wah wah wah 😢")
-
-    @commands.command(
         name='insult',
         help='You can insult by @mentioning someone. Good luck!'
     )
