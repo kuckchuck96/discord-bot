@@ -1,7 +1,7 @@
-import discord
 import os
 import requests
 import random
+import re
 
 from discord.ext import commands
 
@@ -80,6 +80,23 @@ class Garlic(commands.Cog):
             await ctx.send(f"{user} not good enough, sucker! 🎉")
         else:
             await ctx.send(f"{user} wah wah wah 😢")
+
+    @commands.command(
+        name='insult'
+    )
+    async def insult_someone(self, ctx, arg):
+        if re.compile(r'\d+').search(arg).group() == str(self.bot.user.id):
+            await ctx.send(f'Hey! {arg}, You can\'t insult me.')
+        else:
+            try: 
+                res = requests.get('https://evilinsult.com/generate_insult.php?lang=en&type=json')
+                if res.status_code != 200:
+                    raise Exception('Oops! Something went wrong.')
+            except Exception as e:
+                print(e)
+                await ctx.send(f'{arg}, You\'re lucky.')
+            else:
+                await ctx.send(f'{arg} {res.json()["insult"]}')
 
 def setup(bot):
     bot.add_cog(Garlic(bot))                  
