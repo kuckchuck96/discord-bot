@@ -82,7 +82,8 @@ class Garlic(commands.Cog):
             await ctx.send(f"{user} wah wah wah 😢")
 
     @commands.command(
-        name='insult'
+        name='insult',
+        help='You can insult by @mentioning someone. Good luck!'
     )
     async def insult_someone(self, ctx, arg):
         if re.compile(r'\d+').search(arg).group() == str(self.bot.user.id):
