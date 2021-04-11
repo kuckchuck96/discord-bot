@@ -62,7 +62,8 @@ class Garlic(commands.Cog):
                 await ctx.send(data[i])
 
     @commands.command(
-        aliases=['slots', 'slotmachine'],
+        name='slotmachine',
+        aliases=['slots'],
         help='Pull the lever of the invisible SLOT MACHINE'
     )       
     async def slot_machine(self, ctx):
