@@ -8,6 +8,17 @@ class Facts(commands.Cog):
         self.bot = bot
 
     @commands.command(
+        name='num',
+        help='Gives random number facts.'
+    )
+    async def number_trivia(self, ctx):
+        res = requests.get('http://numbersapi.com/random/trivia')
+        if res.status_code != 200:
+            await ctx.send('Oops! Something went wrong. Please try again.')
+        else:
+            await ctx.send(res.text)    
+
+    @commands.command(
         name = 'doggo',
         aliases = ['dog', 'dogs'],
         help = 'Get random doogo facts'

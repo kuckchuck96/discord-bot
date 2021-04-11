@@ -38,30 +38,6 @@ class Garlic(commands.Cog):
             await ctx.send('No results found for keyword "{0}".'.format(arg))
 
     @commands.command(
-        name='num',
-        help='Gives random number facts.'
-    )
-    async def number_trivia(self, ctx):
-        res = requests.get('http://numbersapi.com/random/trivia')
-        if res.status_code != 200:
-            await ctx.send('Oops! Something went wrong. Please try again.')
-        else:
-            await ctx.send(res.text)
-
-    @commands.command(
-        name='cn',
-        help='Retrieve a random chuck joke.'
-    )
-    async def chuck_norris(self, ctx):
-        res = requests.get('https://api.chucknorris.io/jokes/random')
-        if res.status_code != 200:
-            await ctx.send('Oops! Something went wrong. Please try again.')
-        else:
-            data = res.json()
-            for i in ['icon_url', 'value']:
-                await ctx.send(data[i])
-
-    @commands.command(
         name='insult',
         help='You can insult by @mentioning someone. Good luck!'
     )

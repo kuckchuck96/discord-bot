@@ -21,7 +21,20 @@ class Jokes(commands.Cog):
             await ctx.send(f'{joke}')
         except Exception as err:
             print(err)
-            await ctx.send('Something went wrong...')        
+            await ctx.send('Something went wrong...') 
+
+    @commands.command(
+        name='cn',
+        help='Retrieve a random chuck joke.'
+    )
+    async def chuck_norris(self, ctx):
+        res = requests.get('https://api.chucknorris.io/jokes/random')
+        if res.status_code != 200:
+            await ctx.send('Oops! Something went wrong. Please try again.')
+        else:
+            data = res.json()
+            for i in ['icon_url', 'value']:
+                await ctx.send(data[i])               
 
 def setup(bot):
     bot.add_cog(Jokes(bot))         
