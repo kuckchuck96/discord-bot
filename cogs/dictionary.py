@@ -26,7 +26,9 @@ class Dictionary(commands.Cog):
             if not len(res['list']):
                 return await ctx.send("What alien language is that!! No matches...")
             # Sort by votes and pick the highest
-            res = sorted(res['list'], reverse=True, key=lambda g: int(g["thumbs_up"]))[0]
+            # res = sorted(res['list'], reverse=True, key=lambda g: int(g["thumbs_up"]))[0]
+            # Get random definitions - changed from highest vote to random
+            res = res['list'][random.randrange(0, len(res['list']))]
             definition = res['definition'].replace('[', '').replace(']', '')
             await ctx.send(f"📖 Urban Dictionary definition for **{res['word']}**```\n{definition}```")    
         except Exception:
