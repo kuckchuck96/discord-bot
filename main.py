@@ -6,9 +6,10 @@ import random
 from dotenv import load_dotenv
 from discord.ext import commands
 
-load_dotenv()
 
-load_dotenv()
+# load_dotenv()
+
+
 print("Initializing...")
 bot = commands.Bot(command_prefix='>')
 
@@ -21,10 +22,15 @@ Link to add bot to server (Prod): https://discord.com/api/oauth2/authorize?clien
 Link to add bot to server (Dev): https://discord.com/api/oauth2/authorize?client_id=830460503653875712&permissions=519232&scope=bot
 '''
 
-for file in os.listdir("cogs"):
-    if file.endswith(".py"):
-        name = file[:-3]
-        bot.load_extension(f"cogs.{name}")
+with os.scandir('cogs') as dir:
+    for entry in dir:
+        if entry.is_file():
+            bot.load_extension(f"cogs.{entry.name[:-3]}")
+
+# for file in os.listdir("cogs"):
+#     if file.endswith(".py"):
+#         name = file[:-3]
+#         bot.load_extension(f"cogs.{name}")
 
 # Trigger the bot.
 try: 
