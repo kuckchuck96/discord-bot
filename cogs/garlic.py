@@ -17,7 +17,8 @@ class Garlic(commands.Cog):
         await ctx.send('{0}! {1}'.format(arg, ctx.author.mention))
 
     @commands.command(
-        name='gif',
+        name = 'gif',
+        aliases = ['g'],
         help='Send GIFs based on the search text passed.'
         )
     async def send_gif(self, ctx, arg):
