@@ -8,7 +8,7 @@ class Facts(commands.Cog):
         self.bot = bot
 
     @commands.command(
-        name='num',
+        name='randomnum',
         help='Gives random number facts.'
     )
     async def number_trivia(self, ctx):
@@ -38,7 +38,8 @@ class Facts(commands.Cog):
                 temperament = breed_details['temperament']
                 height = breed_details['height']['metric'] + ' cm'
                 weight = breed_details['weight']['metric'] + ' kg'
-                await ctx.send(f'__**{name}**__\n**Height:** {height}  **Weight:** {weight}\n{temperament}\n{gif}')
+                await ctx.send(f'__**{name}**__\n**Height:** {height}  **Weight:** {weight}\n{temperament}')
+                await ctx.send(gif)
         except Exception as err:
             print(err)
             await ctx.send('Something went wrong, finding someone to blame...')   

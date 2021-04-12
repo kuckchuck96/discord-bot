@@ -10,14 +10,14 @@ class Garlic(commands.Cog):
         self.bot = bot
 
     @commands.command(
-        name='s',
+        name='greet',
         help='Greets the user using whatever argument passed.',
         )
     async def salute(self, ctx, arg):
         await ctx.send('{0}! {1}'.format(arg, ctx.author.mention))
 
     @commands.command(
-        name='g',
+        name='gif',
         help='Send GIFs based on the search text passed.'
         )
     async def send_gif(self, ctx, arg):
@@ -25,8 +25,7 @@ class Garlic(commands.Cog):
             ('api_key', os.getenv('GIFY_API_KEY')),
             ('q', arg),
             ('limit', 50),
-            ('lang', 'en'),
-            ('rating', 'pg-13')
+            ('lang', 'en')
         ]
         res = requests.get(os.getenv('GIFY_API_URL'), params=body)
         if res.status_code != 200:
@@ -43,7 +42,7 @@ class Garlic(commands.Cog):
     )
     async def insult_someone(self, ctx, arg):
         if re.compile(r'\d+').search(arg).group() == str(self.bot.user.id):
-            await ctx.send(f'Hey! {arg}, You can\'t insult me.')
+            await ctx.send(f'Hey! {ctx.author.mention}, You can\'t insult me.')
         else:
             try: 
                 res = requests.get('https://evilinsult.com/generate_insult.php?lang=en&type=json')
