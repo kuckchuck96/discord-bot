@@ -11,7 +11,7 @@ from discord.ext import commands
 
 
 print("Initializing...")
-bot = commands.Bot(command_prefix='>')
+bot = commands.Bot(command_prefix='>', help_command=None)
 
 '''
 Token (Prod): ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho
