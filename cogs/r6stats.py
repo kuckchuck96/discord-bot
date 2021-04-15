@@ -71,13 +71,14 @@ class R6Stats(commands.Cog):
         aliases = ['r', 'rainbow', 'rainbow6', 'rainbowsix'],
         help = 'Get R6 stats for LASN'
     )
-    async def get_stats(self, ctx, user):
+    async def get_stats(self, ctx, user, platform = 'pc'):
         try:
             api_key = os.getenv('R6_STATS_KEY')
-            platform = 'pc' #Default @TODO: take as arg
             requestUrl = os.getenv('R6_STATS_URL') + f'/stats/{user}/{platform}/generic'
             headers = {'Accept': 'application/json', 'Authorization': f'Bearer {api_key}'}
             statsRes = requests.get(requestUrl, headers = headers)
+            if statsRes.status_code != 200:
+                await ctx.send('Please check the arguments passed...')
             await embed_stats(ctx, statsRes.json())
         except Exception as err:
             print(err)   
