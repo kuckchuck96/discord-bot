@@ -134,11 +134,12 @@ class R6Stats(commands.Cog):
             # Operator stats
             if queue == 'ops' or queue == 'operators':
                 await embed_operator_stats(ctx, user, platform)
-            # Combined stats    
-            generic_stats = await get_stats(ctx, user, platform, 'generic')
-            operator_stats = await get_stats(ctx, user, platform, 'operators')
-            top_operators = await get_top_operators(operator_stats, 5)
-            await embed_stats(ctx, generic_stats, queue, top_operators)
+            else:
+                # Combined stats    
+                generic_stats = await get_stats(ctx, user, platform, 'generic')
+                operator_stats = await get_stats(ctx, user, platform, 'operators')
+                top_operators = await get_top_operators(operator_stats, 5)
+                await embed_stats(ctx, generic_stats, queue, top_operators)
         except Exception as err:
             print(err)   
             await ctx.send('Something went wrong, finding someone to blame...probably R6Stats')
