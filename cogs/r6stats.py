@@ -58,10 +58,11 @@ async def get_stats(ctx, user, platform = 'pc', stat_type = 'generic'):
         await ctx.send('Please check the arguments passed...')
     return stats_res.json()       
 
-async def get_top_operators(ctx, user, platform = 'pc', limit = '5'):
-    operators = await get_stats(ctx, user, platform, 'operators')
+async def get_top_operators(operators, limit = '5'):
     #Sort operators by kills
     operators = sorted(operators['operators'], reverse=True, key=lambda g: int(g['kills']))
+    if limit == 0:
+        return operators
     return operators[:limit]    
 
 async def embed_stats(ctx, stats, queue, top_operators):
@@ -94,6 +95,31 @@ async def embed_stats(ctx, stats, queue, top_operators):
         print(err)
         await ctx.send('Something went wrong, finding someone to blame...')
 
+async def embed_operator_stats(ctx, user, platform):
+    try:
+        stats = await get_stats(ctx, user, platform, 'operators')
+        top_operators = await get_top_operators(stats, 12)
+        # Create embed
+        embed = discord.Embed(
+            name = 'LASN OP Stats',
+            title = 'Operator Stats',
+            color = discord.Color.blue()
+        )       
+        embed.set_thumbnail(url= stats['avatar_url_256'])
+        embed.set_author(name= stats['username'], icon_url= stats['avatar_url_146'])
+        for op in top_operators:
+            name = op['name']
+            kills = op['kills']
+            kd = op['kd']
+            wins = op['wins']
+            headshots = op['headshots']
+            value = f'**Kills:** {kills}\n**K/D:** {kd}\n**Wins:** {wins}\n**Headshots:** {headshots}'
+            embed.add_field(name= name, value= value, inline= True)
+        await ctx.send(embed=embed)
+    except Exception as err:
+        print(err)
+        await ctx.send('Something went wrong, finding someone to blame...')    
+    
 class R6Stats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -105,8 +131,13 @@ class R6Stats(commands.Cog):
     )
     async def get_r6_stats_by_user(self, ctx, user, queue = 'all', platform = 'pc'):
         try:
+            # Operator stats
+            if queue == 'ops' or queue == 'operators':
+                await embed_operator_stats(ctx, user, platform)
+            # Combined stats    
             generic_stats = await get_stats(ctx, user, platform, 'generic')
-            top_operators = await get_top_operators(ctx, user, platform, 5)
+            operator_stats = await get_stats(ctx, user, platform, 'operators')
+            top_operators = await get_top_operators(operator_stats, 5)
             await embed_stats(ctx, generic_stats, queue, top_operators)
         except Exception as err:
             print(err)   
