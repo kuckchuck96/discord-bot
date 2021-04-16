@@ -49,7 +49,22 @@ def map_queue(queue, stats):
     # Default 'all'            
     return stats['stats']['general']
 
-async def embed_stats(ctx, stats, queue):
+async def get_stats(ctx, user, platform = 'pc', stat_type = 'generic'):
+    api_key = os.getenv('R6_STATS_KEY')
+    request_url = os.getenv('R6_STATS_URL') + f'/stats/{user}/{platform}/{stat_type}'
+    headers = {'Accept': 'application/json', 'Authorization': f'Bearer {api_key}'}
+    stats_res = requests.get(request_url, headers = headers)
+    if stats_res.status_code != 200:
+        await ctx.send('Please check the arguments passed...')
+    return stats_res.json()       
+
+async def get_top_operators(ctx, user, platform = 'pc', limit = '5'):
+    operators = await get_stats(ctx, user, platform, 'operators')
+    #Sort operators by kills
+    operators = sorted(operators['operators'], reverse=True, key=lambda g: int(g['kills']))
+    return operators[:limit]    
+
+async def embed_stats(ctx, stats, queue, top_operators):
     try:
         about = get_about_stats(stats)
         mapped_queue = map_queue(queue, stats)
@@ -68,6 +83,12 @@ async def embed_stats(ctx, stats, queue):
         embed.add_field(name= f'General({queue.capitalize()})', value= general)
         embed.add_field(name= 'Kills Breakdown', value= kills_breakdown)
         embed.add_field(name= 'Miscellaneous', value= miscellaneous)
+        top5_operators = ''
+        for ops in top_operators:
+            name = ops['name']
+            kills =  ops['kills']
+            top5_operators += f'**{name}:** {kills}\n'
+        embed.add_field(name= 'Top Operators', value= top5_operators)    
         await ctx.send(embed=embed)
     except Exception as err:
         print(err)
@@ -82,15 +103,11 @@ class R6Stats(commands.Cog):
         aliases = ['r', 'rainbow', 'rainbow6', 'rainbowsix'],
         help = 'Get R6 stats for LASN'
     )
-    async def get_stats(self, ctx, user, queue = 'all', platform = 'pc'):
+    async def get_r6_stats_by_user(self, ctx, user, queue = 'all', platform = 'pc'):
         try:
-            api_key = os.getenv('R6_STATS_KEY')
-            requestUrl = os.getenv('R6_STATS_URL') + f'/stats/{user}/{platform}/generic'
-            headers = {'Accept': 'application/json', 'Authorization': f'Bearer {api_key}'}
-            statsRes = requests.get(requestUrl, headers = headers)
-            if statsRes.status_code != 200:
-                await ctx.send('Please check the arguments passed...')
-            await embed_stats(ctx, statsRes.json(), queue)
+            generic_stats = await get_stats(ctx, user, platform, 'generic')
+            top_operators = await get_top_operators(ctx, user, platform, 5)
+            await embed_stats(ctx, generic_stats, queue, top_operators)
         except Exception as err:
             print(err)   
             await ctx.send('Something went wrong, finding someone to blame...probably R6Stats')
