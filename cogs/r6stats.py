@@ -40,7 +40,7 @@ def get_miscellaneous_stats(stats):
     return f'**Reinforcements:** {reinforcements}\n**Barricades:** {barricades}\n**Revives:** {revives}\n**Suicides:** {suicides}'
 
 def map_queue(queue, stats):
-    if queue == 'casual':
+    if queue == 'casual' or queue == 'unranked':
         return stats['stats']['queue']['casual']
     elif queue == 'ranked':
         return stats['stats']['queue']['ranked']
@@ -131,11 +131,16 @@ class R6Stats(commands.Cog):
     )
     async def get_r6_stats_by_user(self, ctx, user, queue = 'all', platform = 'pc'):
         try:
+            queue = queue.lower()
+            valid_queues = ['all', 'ranked', 'casual', 'unranked', 'other']
+            valid_ops_commands = ['ops', 'operator', 'operators']
             # Operator stats
-            if queue == 'ops' or queue == 'operators':
+            if queue in valid_ops_commands:
                 await embed_operator_stats(ctx, user, platform)
             else:
-                # Combined stats    
+                # Combined stats
+                if queue not in valid_queues:
+                    queue = 'all'
                 generic_stats = await get_stats(ctx, user, platform, 'generic')
                 operator_stats = await get_stats(ctx, user, platform, 'operators')
                 top_operators = await get_top_operators(operator_stats, 5)
