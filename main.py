@@ -2,12 +2,14 @@ import discord
 import os
 import requests
 import random
+import config
 
 from dotenv import load_dotenv
 from discord.ext import commands
-
+from config import default
 
 # load_dotenv()
+config = default.config()
 
 
 print("Initializing...")
@@ -30,6 +32,6 @@ with os.scandir('cogs') as dir:
 
 # Trigger the bot.
 try: 
-    bot.run(os.getenv('BOT_TOKEN'))
+    bot.run(config['bot_token'])
 except Exception as e:
     print(f'Login error: {e}')    

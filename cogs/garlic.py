@@ -2,12 +2,17 @@ import os
 import requests
 import random
 import re
+import config
 
 from discord.ext import commands
+from config import default
 
 class Garlic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        config = default.config()
+        self.gify_api_key = config['gify']['api_key']
+        self.gify_api_url = config['gify']['api_url']
 
     @commands.command(
         name='greet',
@@ -23,12 +28,12 @@ class Garlic(commands.Cog):
         )
     async def send_gif(self, ctx, arg):
         body = [
-            ('api_key', os.getenv('GIFY_API_KEY')),
+            ('api_key', self.gify_api_key),
             ('q', arg),
             ('limit', 50),
             ('lang', 'en')
         ]
-        res = requests.get(os.getenv('GIFY_API_URL'), params=body)
+        res = requests.get(self.gify_api_url, params=body)
         if res.status_code != 200:
             await ctx.send('Oops! Something went wrong. Please try again.')
         elif len(res.json()['data']) > 0:
