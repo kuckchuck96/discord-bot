@@ -15,6 +15,17 @@ class Fandom(commands.Cog):
         self.bot = bot
         self.marv_env_list = ['MARV_TS', 'MARV_PRIVATE_KEY', 'MARV_PUBLIC_KEY']
 
+    def call_api(self, url, params) -> str:
+        res = requests.get(url=url, params=params)
+        if res.status_code != 200:
+            return None
+        return res.text
+
+    # Pass JSON as string.
+    def json_to_obj_parser(self, data):
+        return json.loads(data, object_hook=lambda o: SimpleNamespace(**o)) if data != None else None
+  
+
     @commands.command(
         name='marvel',
         help='Search for your favourite Marvel character.'
@@ -64,6 +75,57 @@ class Fandom(commands.Cog):
         for k in self.marv_env_list:
             hash.update(os.getenv(k).encode('utf-8'))
         return hash.hexdigest()
+
+    @commands.command(
+        name='sw',
+        help='Search your favourite Star Wars character.'
+    )
+    async def star_wars_data(self, ctx, *arg):
+        name = ' '.join(arg)
+        try:
+            res = requests.get(os.getenv('SW_API_URL'), params=[('search', name)])
+            if res.status_code != 200:
+                raise Exception('Oops! Something went wrong.')
+
+            # Convert json response to object.
+            obj = self.json_to_obj_parser(res.text)
+        
+            if len(obj.results) > 0:
+                results = obj.results[0]
+
+                homeworld = self.call_api(results.homeworld, None)
+                if homeworld != None:
+                    homeworld_obj = self.json_to_obj_parser(homeworld)
+
+                embed = discord.Embed(
+                    title=f'{results.name} ({results.birth_year})',
+                    description='From **'+ homeworld_obj.name +'**.' if homeworld_obj != None and str(homeworld_obj.name).strip().lower() != 'unknown' else '',
+                    color = discord.Color.gold()
+                )
+
+                # Movies.
+                if len(results.films) > 0:
+                    value = []
+                    for i, film in enumerate(results.films):
+                        film_data = self.json_to_obj_parser(self.call_api(film, None))
+                        if film_data != None:
+                            value.append(f'{i+1}. {film_data.title} (Ep-{film_data.episode_id}, {film_data.release_date}).')
+                    embed.add_field(name='Movie/s', value='\n'.join(value))
+
+                # Starships.
+                if len(results.starships):
+                    value = []
+                    for i, sf in enumerate(results.starships):
+                        sf_data = self.json_to_obj_parser(self.call_api(sf, None))
+                        if sf_data != None:
+                            value.append(f'{i+1}. **{sf_data.model}** manufactured by **{sf_data.manufacturer}**.')
+                    embed.add_field(name='Starship/s', value='\n'.join(value))
+            else:
+                raise Exception(f'No data found for **{name.capitalize()}**')
+        except Exception as ex:
+            await ctx.send(ex)
+        else:
+            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Fandom(bot)) 
