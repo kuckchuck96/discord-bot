@@ -1,13 +1,16 @@
 import discord
-import os
 import requests
 import random
+import config
 
 from discord.ext import commands
+from config import default
 
 class Dictionary(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        config = default.config()
+        self.urban_dictionary_api_url = config['urban_dictionary']['api_url']
 
     @commands.command(
         name = 'define',
@@ -16,8 +19,8 @@ class Dictionary(commands.Cog):
     async def urban_define(self, ctx, *args):
         try:
             args = ' '.join(args)
-            requestUrl = os.getenv('URBAN_API_URL') + '/define?term=' + args
-            res = requests.get(requestUrl)
+            request_url = f'{self.urban_dictionary_api_url}/define?term={args}'
+            res = requests.get(request_url)
             if res.status_code != 200:
                 await ctx.send('Oops! Something went wrong. Please try again.')
             # Convert to json    
@@ -41,7 +44,7 @@ class Dictionary(commands.Cog):
     )
     async def random(self, ctx): 
         try:
-            requestUrl = os.getenv('URBAN_API_URL') + '/random'
+            requestUrl = f'{self.urban_dictionary_api_url}/random'
             res = requests.get(requestUrl)
             res = res.json()['list'][random.randrange(0, len(res.json()['list']))]
             word = res['word'].replace('[', '').replace(']', '')
