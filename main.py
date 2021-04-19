@@ -9,6 +9,7 @@ from discord.ext import commands
 from config import default
 
 # load_dotenv()
+print('Loading config...')
 config = default.config()
 
 
