@@ -11,8 +11,10 @@ class Garlic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         config = default.config()
-        self.gify_api_key = config['gify']['api_key']
-        self.gify_api_url = config['gify']['api_url']
+        # self.gify_api_key = config['gify']['api_key']
+        # self.gify_api_url = config['gify']['api_url']
+        self.gify_api_key = config.gify.api_key
+        self.gify_api_url = config.gify.api_url
 
     @commands.command(
         name='greet',

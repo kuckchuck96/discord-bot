@@ -33,6 +33,7 @@ with os.scandir('cogs') as dir:
 
 # Trigger the bot.
 try: 
-    bot.run(config['bot_token'])
+    # bot.run(config['bot_token'])
+    bot.run(config.bot_token)
 except Exception as e:
     print(f'Login error: {e}')    

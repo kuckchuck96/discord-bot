@@ -13,8 +13,10 @@ class R6Stats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         config = default.config()
-        self.r6stats_key = config['r6stats']['api_key']
-        self.r6stats_url = config['r6stats']['api_url']
+        # self.r6stats_key = config['r6stats']['api_key']
+        # self.r6stats_url = config['r6stats']['api_url']
+        self.r6stats_key = config.r6stats.api_key
+        self.r6stats_url = config.r6stats.api_url
 
     def get_about_stats(self, stats):
         level = stats['progression']['level']
