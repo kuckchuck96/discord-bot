@@ -13,8 +13,5 @@ def config():
         
         json_file = open(os.path.join(__location__ , f"{filename}.json"), encoding='utf8')
         return json.loads(json_file.read(), object_hook=lambda o: SimpleNamespace(**o))
-
-        # with open(os.path.join(__location__ , f"{filename}.json"), encoding='utf8') as data:
-        #     return json.load(data)
     except FileNotFoundError:
         raise FileNotFoundError("JSON file wasn't found")
