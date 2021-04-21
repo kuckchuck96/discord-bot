@@ -14,7 +14,7 @@ config = default.config()
 
 
 print("Initializing...")
-bot = commands.Bot(command_prefix='>', help_command=None)
+bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None)
 
 '''
 Token (Prod): ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho
