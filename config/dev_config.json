@@ -11,10 +11,19 @@
         "api_url": "https://api2.r6stats.com/public-api",
         "api_key": "c0b27d5f-b1d6-4456-8365-84e17fde33ce"
     },
-    "marvel": {
+    "disney": {
         "public_key": "2a661a50de1aa41ff0a24ee2422b4f87",
         "private_key": "499207b65b5cdf76685b868ba323269adb1a35c6",
         "ts": 1,
-        "api_url": "https://gateway.marvel.com:443/v1/public/characters"
+        "marvel_api_url": "https://gateway.marvel.com:443/v1/public/characters",
+        "sw_api_url": "https://swapi.dev/api/people"
+    },
+    "facts": {
+        "number": "http://numbersapi.com/random/trivia",
+        "dog": "https://api.thedogapi.com/v1/images/search"
+    },
+    "jokes": {
+        "norris": "https://api.chucknorris.io/jokes/random",
+        "dadjoke": "https://icanhazdadjoke.com"
     }
 }

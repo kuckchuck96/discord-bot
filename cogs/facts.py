@@ -2,17 +2,21 @@ import discord
 import requests
 
 from discord.ext import commands
+from config import default
+
 
 class Facts(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        config = default.config()
+        self.number, self.dog = config.facts.number, config.facts.dog
 
     @commands.command(
         name='randomnum',
         help='Gives random number facts.'
     )
     async def number_trivia(self, ctx):
-        res = requests.get('http://numbersapi.com/random/trivia')
+        res = requests.get(self.number)
         if res.status_code != 200:
             await ctx.send('Oops! Something went wrong. Please try again.')
         else:
@@ -25,7 +29,7 @@ class Facts(commands.Cog):
     )
     async def doggo_facts(self, ctx):
         try:
-            request_url = 'https://api.thedogapi.com/v1/images/search'
+            request_url = self.dog
             res = requests.get(request_url)
             doggo_details = res.json()[0]
             gif = doggo_details['url']

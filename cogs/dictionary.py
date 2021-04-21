@@ -10,7 +10,8 @@ class Dictionary(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         config = default.config()
-        self.urban_dictionary_api_url = config['urban_dictionary']['api_url']
+        # self.urban_dictionary_api_url = config['urban_dictionary']['api_url']
+        self.urban_dictionary_api_url = config.urban_dictionary.api_url
 
     @commands.command(
         name = 'define',
