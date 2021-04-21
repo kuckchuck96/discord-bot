@@ -2,10 +2,14 @@ import discord
 import requests
 
 from discord.ext import commands
+from config import default
+
 
 class Jokes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        config = default.config()
+        self.norris_api_url, self.dadjoke_api_url = config.jokes.norris_api_url, config.jokes.dadjoke_api_url
 
     @commands.command(
         name = 'dadjoke',
@@ -14,9 +18,8 @@ class Jokes(commands.Cog):
     )
     async def dad_jokes(self, ctx):
         try:
-            requestUrl = 'https://icanhazdadjoke.com'
             headers = {'Accept': 'application/json'}
-            joke = requests.get(requestUrl, headers=headers)
+            joke = requests.get(self.dadjoke_api_url, headers=headers)
             joke = joke.json()['joke']
             await ctx.send(f'{joke}')
         except Exception as err:
@@ -28,7 +31,7 @@ class Jokes(commands.Cog):
         help='Retrieve a random chuck joke.'
     )
     async def chuck_norris(self, ctx):
-        res = requests.get('https://api.chucknorris.io/jokes/random')
+        res = requests.get(self.norris_api_url)
         if res.status_code != 200:
             await ctx.send('Oops! Something went wrong. Please try again.')
         else:

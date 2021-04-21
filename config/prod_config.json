@@ -1,0 +1,31 @@
+{
+    "bot_token": "ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho",
+    "bot_prefix": ">",
+    "gify": {
+        "api_url": "https://api.giphy.com/v1/gifs/search",
+        "api_key": "9Elw13JewkQiDDHIlv7zWIn7kPmvT0y7"
+    },
+    "urban_dictionary": {
+        "api_url": "https://api.urbandictionary.com/v0"
+    },
+    "r6stats": {
+        "api_url": "https://api2.r6stats.com/public-api",
+        "api_key": "c0b27d5f-b1d6-4456-8365-84e17fde33ce"
+    },
+    "disney": {
+        "public_key": "2a661a50de1aa41ff0a24ee2422b4f87",
+        "private_key": "499207b65b5cdf76685b868ba323269adb1a35c6",
+        "ts": 1,
+        "marvel_api_url": "https://gateway.marvel.com:443/v1/public/characters",
+        "sw_api_url": "https://swapi.dev/api/people"
+    },
+    "facts": {
+        "number_api_url": "http://numbersapi.com/random/trivia",
+        "doggo_api_url": "https://api.thedogapi.com/v1/images/search"
+    },
+    "jokes": {
+        "norris_api_url": "https://api.chucknorris.io/jokes/random",
+        "dadjoke_api_url": "https://icanhazdadjoke.com"
+    }
+}
+

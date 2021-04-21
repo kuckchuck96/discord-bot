@@ -1,10 +1,14 @@
 import discord
+import config
 
 from discord.ext import commands
+from config import default
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        config = default.config()
+        self.bot_prefix = config.bot_prefix
 
     @commands.command(
         name = 'help',
@@ -12,7 +16,7 @@ class Help(commands.Cog):
     )    
     async def help(self, ctx):
         try:
-            prefix = '>'
+            prefix = self.bot_prefix
             embed = discord.Embed(
                 name = 'LASNBot',
                 title = 'Commands',

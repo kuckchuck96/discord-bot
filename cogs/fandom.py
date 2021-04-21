@@ -7,13 +7,14 @@ import requests
 from types import SimpleNamespace
 import json
 from datetime import datetime as dt
+from config import default
 
 
 class Fandom(commands.Cog):
     
     def __init__(self, bot) -> None:
         self.bot = bot
-        self.marv_env_list = ['MARV_TS', 'MARV_PRIVATE_KEY', 'MARV_PUBLIC_KEY']
+        self.conf = default.config()
 
     def call_api(self, url, params) -> str:
         res = requests.get(url=url, params=params)
@@ -34,14 +35,14 @@ class Fandom(commands.Cog):
         char_name = '-'.join(list(map(lambda c: c.capitalize(), arg[0].split('-')))) if len(arg) == 1 and str(arg[0]).count('-') else ' '.join(list(map(lambda c: c.capitalize(), arg)))  
 
         body = [
-            ('ts', os.getenv('MARV_TS')),
-            ('apikey', os.getenv('MARV_PUBLIC_KEY')),
+            ('ts', self.conf.disney.ts),
+            ('apikey', self.conf.disney.public_key),
             ('hash', self.create_hash()),
             ('name', char_name)
         ]
 
         try:
-            res = requests.get(os.getenv('MARV_CHARACTERS_URL'), params=body)
+            res = requests.get(self.conf.disney.marvel_api_url, params=body)
             if res.status_code != 200:
                 raise Exception('Oops! Something went wrong.')
         except Exception as ex:
@@ -72,8 +73,9 @@ class Fandom(commands.Cog):
             
     def create_hash (self):
         hash = hashlib.md5()
-        for k in self.marv_env_list:
-            hash.update(os.getenv(k).encode('utf-8'))
+        hash.update(str(self.conf.disney.ts).encode('utf-8'))
+        hash.update(str(self.conf.disney.private_key).encode('utf-8'))
+        hash.update(str(self.conf.disney.public_key).encode('utf-8'))
         return hash.hexdigest()
 
     @commands.command(
@@ -83,7 +85,7 @@ class Fandom(commands.Cog):
     async def star_wars_data(self, ctx, *arg):
         name = ' '.join(arg)
         try:
-            res = requests.get(os.getenv('SW_API_URL'), params=[('search', name)])
+            res = requests.get(self.conf.disney.sw_api_url, params=[('search', name)])
             if res.status_code != 200:
                 raise Exception('Oops! Something went wrong.')
 
