@@ -12,6 +12,11 @@ class Events(commands.Cog):
             print('Connecting to discord...')   
         except Exception as ex:
             print(f'Discord connection error: {ex}')
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        await message.channel.send(f'I see everything {message.author.mention}')  
+        await message.channel.send('http://gph.is/12wV6iC') # Eye of Sauron
         
     @commands.Cog.listener()
     async def on_ready(self):
