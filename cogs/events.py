@@ -14,9 +14,12 @@ class Events(commands.Cog):
             print(f'Discord connection error: {ex}')
 
     @commands.Cog.listener()
-    async def on_message_delete(self, message):
-        await message.channel.send(f'I see everything {message.author.mention}')  
-        await message.channel.send('http://gph.is/12wV6iC') # Eye of Sauron
+    async def on_disconnect(self):
+        print(f'Disconnected from discord...reconnecting...') 
+
+    @commands.Cog.listener()
+    async def on_resumed(self):
+        print(f'Reconnected to discord.')           
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -34,6 +37,11 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_command(self, ctx):
         print(f"[Command] {ctx.message.clean_content}")
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        await message.channel.send(f'I see everything {message.author.mention}')  
+        await message.channel.send('http://gph.is/12wV6iC') # Eye of Sauron
 
 def setup(bot):
     bot.add_cog(Events(bot))        
