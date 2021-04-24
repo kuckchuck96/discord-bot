@@ -16,6 +16,7 @@ class Social(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.config = default.config()
+        self.folders = ['media', 'news']
 
     def create_news (self, country) -> str:
         # text = '1. Hi! My name is Kunal Deshpande.'
@@ -35,10 +36,10 @@ class Social(commands.Cog):
             obj = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))            
 
             # Prepare news.
-            content = '\n'.join([f'{i + 1}. {n.title}' for i, n in enumerate(obj.articles) if i < 5])
+            content = '\n'.join(['Today\'s top 5 news.']+ [f'{i + 1}. {n.title}' for i, n in enumerate(obj.articles) if i < 5] + [f'{self.bot.user.name} over and out!'])
 
-            folders = ['media', 'news']
-            path = os.path.join(os.getcwd(), *folders)
+            # folders = ['media', 'news']
+            path = os.path.join(os.getcwd(), *self.folders)
             if not os.path.isdir(path):
                 os.makedirs(path)
             media = gTTS(text=content, lang='en', slow=False, tld='co.in')
@@ -64,6 +65,12 @@ class Social(commands.Cog):
             else:
                 await ctx.send('Unable to fetch news from source.')
             await vc.disconnect()
+            try:
+                if os.path.isfile(audio_file):
+                    os.remove(audio_file)
+                    os.removedirs(os.path.join(*self.folders))
+            except OSError as err:
+                print('Unable to cleanup file storage.')
         else:
             await ctx.send(f'{ctx.author.mention}, you must be connected to the voice channel.')
 
