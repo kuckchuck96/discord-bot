@@ -40,8 +40,9 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        await message.channel.send(f'I see everything {message.author.mention}')  
-        await message.channel.send('http://gph.is/12wV6iC') # Eye of Sauron
+        if message.author.bot == False:
+            await message.channel.send(f'I see everything {message.author.mention}')  
+            await message.channel.send('http://gph.is/12wV6iC') # Eye of Sauron
 
 def setup(bot):
     bot.add_cog(Events(bot))        
