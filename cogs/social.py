@@ -43,7 +43,7 @@ class Social(commands.Cog):
             if not os.path.isdir(path):
                 os.makedirs(path)
             media = gTTS(text=content, lang='en', slow=False, tld='co.in')
-            file_to_create = os.path.join(path, 'welcome.mp3')
+            file_to_create = os.path.join(path, 'news.mp3')
             media.save(file_to_create)
             return file_to_create 
 
