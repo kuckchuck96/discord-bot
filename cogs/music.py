@@ -84,14 +84,7 @@ class Music(commands.Cog):
         ctx.voice_client.source.volume = volume / 100
         await ctx.send(f"Changed volume to {volume}%")
 
-    @commands.command()
-    async def play(self, ctx, *, query):
-        #To Play From Local File
-
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
-        ctx.voice_client.play(source, after=lambda e: print(f'Player error: {e}') if e else None)
-
-        await ctx.send(f'Now playing: {query}')
+    
 
 
 
@@ -115,7 +108,7 @@ class Music(commands.Cog):
 
         await ctx.voice_client.disconnect()
 
-    @play.before_invoke
+    # @play.before_invoke
     @yt.before_invoke
     @stream.before_invoke
     async def ensure_voice(self, ctx):
