@@ -21,11 +21,7 @@ ytdl_format_options = {
     'no_warnings': True,
     'default_search': 'auto',
     'source_address': '0.0.0.0', # bind to ipv4 since ipv6 addresses cause issues sometimes,
-     'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
+   
 
 }
 
@@ -70,7 +66,9 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(name = 'join',
+        aliases = ['aaja'],
+        help = 'Ask LASN to grace us with his company')
     async def join(self, ctx, *, channel: discord.VoiceChannel):
         #To Join Voice Channel
 
@@ -112,7 +110,9 @@ class Music(commands.Cog):
         
 
 
-    @commands.command()
+    @commands.command(name = 'volume',
+        aliases = ['vol'],
+        help = 'Change lasn ')
     async def volume(self, ctx, volume: int):
        #Change Vol
 
