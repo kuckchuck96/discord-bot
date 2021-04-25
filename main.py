@@ -1,3 +1,4 @@
+import discord
 import os
 import config
 
@@ -9,9 +10,9 @@ from config import default
 print('Loading config...')
 config = default.config()
 
-
+intents = discord.Intents.all()
 print("Initializing...")
-bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None)
+bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None, intents=intents)
 
 '''
 Token (Prod): ODEzMDYwMjIyMDQ1NjUxMDE0.YDJzVg.3AN8EzCEa4r9nCVomh2lqHGy0Ho
