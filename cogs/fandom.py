@@ -1,8 +1,6 @@
 import discord
-from discord import embeds
 from discord.ext import commands
 import hashlib
-import os
 import requests
 from types import SimpleNamespace
 import json

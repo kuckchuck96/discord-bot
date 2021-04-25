@@ -1,7 +1,4 @@
-import discord
 import os
-import requests
-import random
 import config
 
 from dotenv import load_dotenv

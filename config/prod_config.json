@@ -26,6 +26,10 @@
     "jokes": {
         "norris_api_url": "https://api.chucknorris.io/jokes/random",
         "dadjoke_api_url": "https://icanhazdadjoke.com"
+    },
+    "news": {
+        "api_url": "https://newsapi.org/v2/top-headlines",
+        "api_key": "2399f919a32942f8b37245c20531da0d"
     }
 }
 
