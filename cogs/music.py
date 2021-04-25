@@ -20,8 +20,23 @@ ytdl_format_options = {
     'quiet': True,
     'no_warnings': True,
     'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'source_address': '0.0.0.0', # bind to ipv4 since ipv6 addresses cause issues sometimes,
+     'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+    }],
+
 }
+
+# ytdl_format_options = {
+#     'format': 'bestaudio/best',
+#     'postprocessors': [{
+#         'key': 'FFmpegExtractAudio',
+#         'preferredcodec': 'mp3',
+#         'preferredquality': '192',
+#     }],
+# }
 
 ffmpeg_options = {
     'options': '-vn'
