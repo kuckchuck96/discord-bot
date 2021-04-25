@@ -64,7 +64,9 @@ class Music(commands.Cog):
 
         await channel.connect()
 
-    @commands.command()
+    @commands.command(name = 'stream',
+        aliases = ['baja'],
+        help = 'Stream music from youtube')
     async def stream(self, ctx, *, url):
        #Stream
 
@@ -76,13 +78,21 @@ class Music(commands.Cog):
 
         
 
-    @commands.command()
+    @commands.command(name = 'pause',
+        aliases = ['pse'],
+        help = 'Pause currently playing music')
     async def pause(self,ctx):
+        if ctx.voice_client is None:
+            return await ctx.send("Not connected to a voice channel.")
         ctx.voice_client.pause()
         await ctx.send(f'Paused')
 
-    @commands.command()
+    @commands.command(name = 'resume',
+        aliases = ['rs'],
+        help = 'Resume music that is currently paused')
     async def resume(self,ctx):
+        if ctx.voice_client is None:
+            return await ctx.send("Not connected to a voice channel.")
         ctx.voice_client.resume()
         
 
@@ -101,15 +111,7 @@ class Music(commands.Cog):
 
 
 
-    @commands.command()
-    async def yt(self, ctx, *, url):
-        #Download and Play
-
-        async with ctx.typing():
-            player = await YTDLSource.from_url(url, loop=self.bot.loop)
-            ctx.voice_client.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
-
-        await ctx.send(f'Now playing: {player.title}')
+  
 
 
 
@@ -122,7 +124,7 @@ class Music(commands.Cog):
         await ctx.voice_client.disconnect()
 
     # @play.before_invoke
-    @yt.before_invoke
+    #@yt.before_invoke
     @stream.before_invoke
     async def ensure_voice(self, ctx):
         if ctx.voice_client is None:
