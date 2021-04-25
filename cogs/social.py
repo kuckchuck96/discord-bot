@@ -1,14 +1,15 @@
 import asyncio
-from functools import reduce
 import json
+import discord
+import os
+import requests
+
+from functools import reduce
 from os import path
 from discord.ext import commands
 from discord.ext.commands import bot
-import discord
-import os
 from gtts import gTTS
 from config import default
-import requests
 from types import SimpleNamespace
 
 
@@ -38,7 +39,6 @@ class Social(commands.Cog):
             # Prepare news.
             content = '\n'.join(['Today\'s top 5 news.']+ [f'{i + 1}. {n.title}' for i, n in enumerate(obj.articles) if i < 5] + [f'{self.bot.user.name} over and out!'])
 
-            # folders = ['media', 'news']
             path = os.path.join(os.getcwd(), *self.folders)
             if not os.path.isdir(path):
                 os.makedirs(path)
@@ -70,7 +70,7 @@ class Social(commands.Cog):
                     os.remove(audio_file)
                     os.removedirs(os.path.join(*self.folders))
             except OSError as err:
-                print('Unable to cleanup file storage.')
+                print('Unable to cleanup file storage.', err)
         else:
             await ctx.send(f'{ctx.author.mention}, you must be connected to the voice channel.')
 
@@ -93,7 +93,6 @@ class Social(commands.Cog):
     #             # curr_channel = reduce(lambda x: )
     #             # print(ctx.message.guild)
     #             await ctx.message.guild.voice_client.disconnect()
-
 
 def setup(bot):
     bot.add_cog(Social(bot)) 
