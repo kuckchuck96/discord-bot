@@ -1,6 +1,4 @@
 import json
-import os
-from discord.embeds import Embed, EmptyEmbed
 import requests
 import random
 import re

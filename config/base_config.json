@@ -1,9 +1,5 @@
 {
     "bot_prefix": ">",
-    "gify": {
-        "api_url": "https://api.giphy.com/v1/gifs/search",
-        "api_key": "9Elw13JewkQiDDHIlv7zWIn7kPmvT0y7"
-    },
     "urban_dictionary": {
         "api_url": "https://api.urbandictionary.com/v0"
     },
