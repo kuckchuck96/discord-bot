@@ -74,6 +74,19 @@ class Music(commands.Cog):
 
         await ctx.send(f'Now playing: {player.title}')
 
+        
+
+    @commands.command()
+    async def pause(self,ctx):
+        ctx.voice_client.pause()
+        await ctx.send(f'Paused')
+
+    @commands.command()
+    async def resume(self,ctx):
+        ctx.voice_client.resume()
+        
+
+
     @commands.command()
     async def volume(self, ctx, volume: int):
        #Change Vol
