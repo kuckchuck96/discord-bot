@@ -1,17 +1,13 @@
 import discord
-import config
 import utils
 
 from discord.ext import commands
-from config import default
 from utils import notify
 
 
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        config = default.config()
-        self.r6stats_channel = config.r6_notify_channel
 
     @commands.Cog.listener()
     async def on_connect(self):
