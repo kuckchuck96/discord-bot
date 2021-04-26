@@ -1,9 +1,5 @@
 {
     "bot_prefix": ">",
-    "gify": {
-        "api_url": "https://api.giphy.com/v1/gifs/search",
-        "api_key": "9Elw13JewkQiDDHIlv7zWIn7kPmvT0y7"
-    },
     "urban_dictionary": {
         "api_url": "https://api.urbandictionary.com/v0"
     },
@@ -29,5 +25,9 @@
     "news": {
         "api_url": "https://newsapi.org/v2/top-headlines",
         "api_key": "2399f919a32942f8b37245c20531da0d"
+    },
+    "tenor": {
+        "api_url": "https://g.tenor.com/v1/search",
+        "api_key": "MD0IHL3GR3YO"
     }
 }
