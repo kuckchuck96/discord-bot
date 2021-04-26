@@ -1,23 +1,17 @@
 import discord
 import config
+import utils
 
 from discord.ext import commands
 from config import default
+from utils import notify
+
 
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         config = default.config()
         self.r6stats_channel = config.r6_notify_channel
-
-    async def embed_notification(self, after):
-        embed = discord.Embed(
-            name = 'LASNBot',
-            title = f'{after.name} started playing Tom Clancy\'s Rainbow Six Siege',
-            description = f'Join now!',
-            color = discord.Color.red()
-        )
-        return embed    
 
     @commands.Cog.listener()
     async def on_connect(self):
@@ -34,15 +28,10 @@ class Events(commands.Cog):
     async def on_resumed(self):
         print(f'Reconnected to discord.')
 
-    # @TODO: Migrate this out of here
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         try:
-            if after.activity != None: #Ignore other detail events
-                if (after.activity.name == "Tom Clancy's Rainbow Six Siege" or after.activity.name == "Rainbow Six Siege") and after.activity.details == None:
-                    channel = self.bot.get_channel(self.r6stats_channel)
-                    embed = await self.embed_notification(after)
-                    await channel.send(embed=embed)
+            await notify.r6notify(self.bot, after)
         except Exception as err:
             print(err)            
         
