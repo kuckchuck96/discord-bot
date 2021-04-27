@@ -20,10 +20,12 @@ class Dictionary(commands.Cog):
     async def urban_define(self, ctx, *args):
         try:
             args = ' '.join(args)
+            if not len(args):
+                return await ctx.send('Define what?')
             request_url = f'{self.urban_dictionary_api_url}/define?term={args}'
             res = requests.get(request_url)
             if res.status_code != 200:
-                await ctx.send('Oops! Something went wrong. Please try again.')
+                return await ctx.send('Oops! Something went wrong. Please try again.')
             # Convert to json    
             res = res.json()
             # Handle no matches
