@@ -4,8 +4,9 @@ LABEL maintainer="LASN Devs"
 RUN apk update && apk upgrade
 RUN apk add --no-cache git make build-base linux-headers
 RUN apk add --no-cache libressl-dev musl-dev libffi-dev
+RUN apk add --no-cache opus
 RUN apk add --no-cache ffmpeg
-# RUN apk add --no-cache ffmpeg=4.4-r0
+# RUN apk add --no-cache ffmpeg=4.4-r0 --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
 
 WORKDIR /lasnbot
 ADD . /lasnbot
