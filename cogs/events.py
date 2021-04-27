@@ -1,6 +1,9 @@
 import discord
+import utils
 
 from discord.ext import commands
+from utils import notify
+
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -19,7 +22,14 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_resumed(self):
-        print(f'Reconnected to discord.')           
+        print(f'Reconnected to discord.')
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        try:
+            await notify.r6notify(self.bot, after)
+        except Exception as err:
+            print(err)            
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -36,7 +46,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        print(f"[Command] {ctx.message.clean_content}")
+        print(f'[Command] {ctx.message.clean_content}')
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
