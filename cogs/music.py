@@ -132,7 +132,7 @@ class Music(commands.Cog):
 
 
 
-    @commands.command()
+    @commands.command(help= 'Disconnect from voice channel')
     async def stop(self, ctx):
         #Remove Bot
 
