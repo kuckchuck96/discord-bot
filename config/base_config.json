@@ -29,5 +29,6 @@
     "tenor": {
         "api_url": "https://g.tenor.com/v1/search",
         "api_key": "MD0IHL3GR3YO"
-    }
+    },
+    "enable_all_intents": false
 }
