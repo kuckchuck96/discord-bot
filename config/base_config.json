@@ -30,5 +30,8 @@
         "api_url": "https://g.tenor.com/v1/search",
         "api_key": "MD0IHL3GR3YO"
     },
-    "enable_all_intents": false
+    "enable_all_intents": false,
+    "cowinapi": {
+        "findbypin": "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin"
+    }
 }
