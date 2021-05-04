@@ -31,10 +31,10 @@
         "api_key": "MD0IHL3GR3YO"
     },
     "enable_all_intents": false,
-    "cowinapi": {
-        "findbypin": "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin"
-    },
     "covid_tracker": {
         "api_url": "https://corona.lmao.ninja/v2"
+    },
+    "cowinapi": {
+        "findbypin": "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin"
     }
 }

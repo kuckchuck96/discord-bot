@@ -1,3 +1,6 @@
+from datetime import datetime
+import json
+from types import SimpleNamespace
 import discord
 import config
 import requests
@@ -10,6 +13,7 @@ class Pandemic(commands.Cog):
         self.bot = bot
         config = default.config()
         self.covid_tracker_url = config.covid_tracker.api_url
+        self.cowin_api_url = config.cowinapi.findbypin
 
     async def embed_content(self, ctx, content):
         # Create embed
@@ -64,7 +68,46 @@ class Pandemic(commands.Cog):
             return await self.embed_content(ctx, data)
         except Exception as err:
             print(err)
-            await ctx.send('Something went wrong, finding someone to blame...')       
+            await ctx.send('Something went wrong, finding someone to blame...')      
+
+    @commands.command(
+        name='vaccine',
+        help='Provides Covid-19 vaccination centers based on \'pincode\' and \'date\' (dd-mm-yyyy).'
+    )
+    async def vaccine_availability(self, ctx, *arg):
+        pincode, date = map(str, arg)
+
+        try:
+            res = requests.get(url=self.cowin_api_url, params=[
+                ('pincode', pincode),
+                ('date', date)
+            ])
+            if res.status_code != 200:
+                raise Exception('Unable to get vaccination centers.')
+        except Exception as ex:
+            await ctx.send(ex)
+        else:
+            obj = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))
+
+            if len(obj.sessions) > 0:
+                embeds = list()
+                for sesh in obj.sessions:
+                    embed = discord.Embed(
+                        title=f'{sesh.name}, {sesh.district_name}',
+                        description='Till ' + datetime.strptime(sesh.to, '%H:%M:%S').strftime('%I:%M %p'),
+                        colour=discord.Color.magenta()
+                    )
+                    for field in ['fee_type', 'available_capacity', 'min_age_limit', 'vaccine', 'slots']:
+                        embed.add_field(
+                            name=' '.join(field.split('_')).capitalize(), 
+                            value=eval('sesh.' + field) if type(eval(f'sesh.{field}')).__name__ != 'list' else '\n'.join(eval('sesh.' + field)), 
+                            inline=True)
+                    embeds.append(embed)
+
+                for e in embeds:
+                    await ctx.send(embed=e)
+            else:
+                await ctx.send(f'Sorry! No vaccination centers available near {pincode} on {date}.') 
 
 def setup(bot):
     bot.add_cog(Pandemic(bot))            
