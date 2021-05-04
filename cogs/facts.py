@@ -41,7 +41,8 @@ class Facts(commands.Cog):
                 temperament = breed_details['temperament']
                 height = breed_details['height']['metric'] + ' cm'
                 weight = breed_details['weight']['metric'] + ' kg'
-                await ctx.send(f'__**{name}**__\n**Height:** {height}  **Weight:** {weight}\n{temperament}')
+                life_span = breed_details['life_span']
+                await ctx.send(f'__**{name}**__\n**Height:** {height}  **Weight:** {weight}  **Life Span:** {life_span}\n{temperament}')
                 await ctx.send(gif)
         except Exception as err:
             print(err)
