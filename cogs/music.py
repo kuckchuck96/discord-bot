@@ -34,6 +34,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.data = data
         self.title = data.get('title')
         self.url = data.get('url')
+        self.webpage_url = data.get('webpage_url')
         self.thumbnail = data.get('thumbnail')
 
     @classmethod
@@ -53,7 +54,7 @@ class Music(commands.Cog):
 
     async def embed_stream(self, ctx, player):
         # Embeds have 1024 char limit
-        playing_title = f'[{player.title}]({player.url})'[0:1024] 
+        playing_title = f'[{player.title}]({player.webpage_url})'[0:1024] 
         embed = discord.Embed(
             name = 'LASNBot',
             title = 'Now Playing',
