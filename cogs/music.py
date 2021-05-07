@@ -88,8 +88,8 @@ class Music(commands.Cog):
     async def pause(self,ctx):
         if ctx.voice_client is None:
             return await ctx.send("Not connected to a voice channel.")
+        await ctx.message.add_reaction('⏯')    
         ctx.voice_client.pause()
-        await ctx.send(f'Paused')
 
     @commands.command(name = 'resume',
         aliases = ['rs'],
@@ -97,6 +97,7 @@ class Music(commands.Cog):
     async def resume(self,ctx):
         if ctx.voice_client is None:
             return await ctx.send("Not connected to a voice channel.")
+        await ctx.message.add_reaction('⏯')    
         ctx.voice_client.resume()
 
     @commands.command(name = 'volume',
@@ -112,6 +113,7 @@ class Music(commands.Cog):
     @commands.command(help= 'Disconnect from voice channel')
     async def stop(self, ctx):
         #Remove Bot
+        await ctx.message.add_reaction('🛑')
         await ctx.voice_client.disconnect()
 
     # @play.before_invoke
