@@ -83,12 +83,12 @@ class Pandemic(commands.Cog):
             'date': date
         }
 
-        headers = {
-            'User-Agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-        }
+        # headers = {
+        #     'User-Agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+        # }
 
         try:
-            res = requests.get(url=self.cowin_api_url, params=params, headers=headers)
+            res = requests.get(url=self.cowin_api_url, params=params)
             
             if not res.ok:
                 raise Exception('Unable to get vaccination centers.')
@@ -97,9 +97,9 @@ class Pandemic(commands.Cog):
         else:
             obj = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))
 
-            if len(obj.sessions) > 0:
+            if len(obj) > 0:
                 embeds = list()
-                for sesh in obj.sessions:
+                for sesh in obj:
                     embed = discord.Embed(
                         title=f'{sesh.name}, {sesh.district_name}',
                         description='Till ' + datetime.strptime(sesh.to, '%H:%M:%S').strftime('%I:%M %p'),
