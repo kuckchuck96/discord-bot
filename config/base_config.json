@@ -35,6 +35,6 @@
         "api_url": "https://corona.lmao.ninja/v2"
     },
     "cowinapi": {
-        "findbypin": "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin"
+        "findbypin": "https://zggtijv51g.execute-api.ap-south-1.amazonaws.com/default/vaccineMetadataFunction"
     }
 }

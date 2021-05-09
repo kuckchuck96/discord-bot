@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from types import SimpleNamespace
 import discord
+from requests.api import head
 import config
 import requests
 
@@ -77,21 +78,28 @@ class Pandemic(commands.Cog):
     async def vaccine_availability(self, ctx, *arg):
         pincode, date = map(str, arg)
 
+        params = {
+            'pincode': pincode,
+            'date': date
+        }
+
+        # headers = {
+        #     'User-Agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+        # }
+
         try:
-            res = requests.get(url=self.cowin_api_url, params=[
-                ('pincode', pincode),
-                ('date', date)
-            ])
-            if res.status_code != 200:
+            res = requests.get(url=self.cowin_api_url, params=params)
+            
+            if not res.ok:
                 raise Exception('Unable to get vaccination centers.')
         except Exception as ex:
             await ctx.send(ex)
         else:
             obj = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))
 
-            if len(obj.sessions) > 0:
+            if len(obj) > 0:
                 embeds = list()
-                for sesh in obj.sessions:
+                for sesh in obj:
                     embed = discord.Embed(
                         title=f'{sesh.name}, {sesh.district_name}',
                         description='Till ' + datetime.strptime(sesh.to, '%H:%M:%S').strftime('%I:%M %p'),
