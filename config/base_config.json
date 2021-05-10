@@ -30,7 +30,7 @@
         "api_url": "https://g.tenor.com/v1/search",
         "api_key": "MD0IHL3GR3YO"
     },
-    "enable_all_intents": false,
+    "enable_all_intents": true,
     "covid_tracker": {
         "api_url": "https://corona.lmao.ninja/v2"
     },
