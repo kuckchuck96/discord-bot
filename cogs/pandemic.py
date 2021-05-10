@@ -83,10 +83,6 @@ class Pandemic(commands.Cog):
             'date': date
         }
 
-        # headers = {
-        #     'User-Agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-        # }
-
         try:
             res = requests.get(url=self.cowin_api_url, params=params)
             
@@ -95,27 +91,38 @@ class Pandemic(commands.Cog):
         except Exception as ex:
             await ctx.send(ex)
         else:
-            obj = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))
+            centers = json.loads(res.text, object_hook=lambda o: SimpleNamespace(**o))
 
-            if len(obj) > 0:
+            if len(centers):
+
+                incoming_date = date.split('-')
                 embeds = list()
-                for sesh in obj:
-                    embed = discord.Embed(
-                        title=f'{sesh.name}, {sesh.district_name}',
-                        description='Till ' + datetime.strptime(sesh.to, '%H:%M:%S').strftime('%I:%M %p'),
-                        colour=discord.Color.magenta()
-                    )
-                    for field in ['fee_type', 'available_capacity', 'min_age_limit', 'vaccine', 'slots']:
-                        embed.add_field(
-                            name=' '.join(field.split('_')).capitalize(), 
-                            value=eval('sesh.' + field) if type(eval(f'sesh.{field}')).__name__ != 'list' else '\n'.join(eval('sesh.' + field)), 
-                            inline=True)
-                    embeds.append(embed)
 
-                for e in embeds:
-                    await ctx.send(embed=e)
+                # Iterating to match the date passed as a parameter.
+                for center in centers:
+                    for session in center.sessions:
+                        if all(int(x) == int(y) for x, y in zip(incoming_date, str(session.date).split('-'))):
+                            embed = discord.Embed(
+                                title=f'{ center.name }, { center.district_name }, { center.state_name }',
+                                colour=discord.Color.magenta(),
+                                description='**📍Address:** {0}\n**🏢 Block name:** {1}\n'.format(center.address, center.block_name if len(center.block_name) else 'NA'),
+                            )
+                            embed.add_field(name='💰 Fees', value=center.fee_type)
+                            embed.add_field(name='🏟️ Capacity', value=session.available_capacity)
+                            embed.add_field(name='{0} Age'.format('👪' if session.min_age_limit <= 18 else '👨👩'), value=f'{session.min_age_limit}+')
+                            embed.add_field(name='💉 Vaccine', value=session.vaccine)
+                            embed.add_field(name='⏱️ Slots', value='\n'.join(f'{i+1}) {s}' for i, s in enumerate(session.slots)))
+                            embed.set_footer(text='Powered by Co-WIN Public APIs, A GoI Initiative.', icon_url='https://www.countryflags.io/in/flat/64.png')
+                            embeds.append(embed)
+                            break
+
+                if len(embeds):
+                    for e in embeds:
+                        await ctx.send(embed=e)
+                else:
+                    await ctx.send(f'Sorry! No vaccination centers available near **{pincode}** on **{date}**')
             else:
-                await ctx.send(f'Sorry! No vaccination centers available near {pincode} on {date}.') 
+                await ctx.send(f'Sorry! No vaccination centers available near **{pincode}** on **{date}**')
 
 def setup(bot):
     bot.add_cog(Pandemic(bot))            
