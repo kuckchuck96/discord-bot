@@ -13,7 +13,7 @@ config = default.config()
 print("Initializing...")
 bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None)
 # Enable bot with intents support
-if config.enable_all_intents and os.getenv('INTENTS_SUPPORTED'):
+if config.enable_all_intents and os.getenv('INTENTS_SUPPORTED') == 'true':
     intents = discord.Intents.all()
     print('Intents enabled.')
     bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None, intents=intents)
