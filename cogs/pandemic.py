@@ -4,7 +4,6 @@ import discord
 import config
 import requests
 
-from requests.api import head
 from types import SimpleNamespace
 from discord.ext import commands
 from config import default
@@ -16,6 +15,7 @@ class Pandemic(commands.Cog):
         config = default.config()
         self.covid_tracker_url = config.covid_tracker.api_url
         self.cowin_api_url = config.cowinapi.findbypin
+        self.availibilty_scrape_count = config.cowinapi.availibilty_scrape_count
 
     async def embed_content(self, ctx, content):
         # Create embed
@@ -110,7 +110,7 @@ class Pandemic(commands.Cog):
         dateArr = []
         date_now = datetime.date.today()
         dateArr.append(date_now.strftime("%d-%m-%Y"))
-        for i in range(3):
+        for i in range(self.availibilty_scrape_count):
             date_now += datetime.timedelta(days=1)
             dateArr.append(date_now.strftime("%d-%m-%Y"))
         return dateArr          
