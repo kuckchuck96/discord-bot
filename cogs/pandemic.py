@@ -15,7 +15,6 @@ class Pandemic(commands.Cog):
         config = default.config()
         self.covid_tracker_url = config.covid_tracker.api_url
         self.cowin_api_url = config.cowinapi.findbypin
-        self.availibilty_scrape_count = config.cowinapi.availibilty_scrape_count
 
     async def embed_content(self, ctx, content):
         # Create embed
