@@ -1,10 +1,14 @@
 import discord
 import os
 import config
+import sys
 
 from dotenv import load_dotenv
 from discord.ext import commands
 from config import default
+
+# Set file path to access util classes in cogs
+sys.path.append("./utils/")
 
 # Commented for heroku deployment
 # load_dotenv()
