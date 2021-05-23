@@ -26,14 +26,12 @@ class R6Roulette(commands.Cog):
         cred = credentials.Certificate('config/r6roulette-5f65e-83b82e2e691c.json')
         firebase_admin.initialize_app(cred)
         return firestore.client()
-        #session_ref = db.collection(u'leaderboard')
-        #docs = session_ref.stream()
 
     @commands.command(
         name = 'spinR6roulette',
-        help = 'Get a LASN challenge for your R6 session.'
+        help = 'Get a LASN challenge. Usage: >spinR6roulette [user] [startSession="false"] [difficulty="medium"]'
     )    
-    async def r6_roulette(self, ctx, user='Sinister.LASN', difficulty='medium', startSession='false'):
+    async def r6_roulette(self, ctx, user, startSession='false', difficulty='medium'):
         try:
             userSession = self.getActiveSession(user)
             if(not userSession["isActive"]):
@@ -79,6 +77,7 @@ class R6Roulette(commands.Cog):
         else:
             returnText += 'Please enter ">startR6roulette [user]". ' + mission["challenge"]
         await ctx.send(f'{returnText}')
+        await ctx.send('So you choose Easy. Scared little child!?')
         return mission
 
     async def getMediumChallenge(self, ctx, user, startSession):
@@ -94,6 +93,7 @@ class R6Roulette(commands.Cog):
         else:
             returnText += 'Please enter ">startR6roulette [user]". ' + mission["challenge"]
         await ctx.send(f'{returnText}')
+        await ctx.send('So you choose Medium. Thought so!')
         return mission
 
     async def getHardChallenge(self, ctx, user, startSession):
@@ -109,11 +109,12 @@ class R6Roulette(commands.Cog):
         else:
             returnText += 'Please enter ">startR6roulette [user]". ' + mission.get("challenge")
         await ctx.send(f'{returnText}')
+        await ctx.send('So you choose Hard. Don\'t worry, you will find your worth soon!')
         return mission
 
     @commands.command(
         name = 'startR6roulette',
-        help = 'Start you LASN challenge R6 session.'
+        help = 'Start your LASN challenge session. Usage >startR6roulette [user]'
     )  
     async def startSession(self, ctx, user, fromCommand = False, startSession='true'):
         if(startSession == 'true'):
@@ -128,7 +129,7 @@ class R6Roulette(commands.Cog):
 
     @commands.command(
         name = 'endR6roulette',
-        help = 'Get a LASN challenge for your R6 session.'
+        help = 'End your active LASN challenge session. Usage >endR6roulette [user]'
     )  
     async def endSession(self, ctx, user):
         userSession = self.getActiveSession(user)
