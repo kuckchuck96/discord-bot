@@ -133,8 +133,9 @@ class R6Roulette(commands.Cog):
     )  
     async def endSession(self, ctx, user):
         userSession = self.getActiveSession(user)
+        endValue = await self.getOperatorCurrentValue(ctx, user, userSession["challengePath"])
         if(userSession["isActive"]):
-            if(userSession["endValue"] > userSession["winValue"] + userSession["oldValue"]):
+            if(endValue > userSession["winValue"] + userSession["oldValue"]):
                 status = "won"
             else:
                 status = "lost"
