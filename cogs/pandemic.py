@@ -3,10 +3,14 @@ import json
 import discord
 import config
 import requests
+import sys
 
 from types import SimpleNamespace
 from discord.ext import commands
 from config import default
+
+sys.path.append("../utils/")
+from cache import Cache
 
 
 class Pandemic(commands.Cog):
@@ -15,6 +19,7 @@ class Pandemic(commands.Cog):
         config = default.config()
         self.covid_tracker_url = config.covid_tracker.api_url
         self.cowin_api_url = config.cowinapi.findbypin
+        self.cache = Cache(200, 180)
 
     async def embed_content(self, ctx, content):
         # Create embed
@@ -45,14 +50,23 @@ class Pandemic(commands.Cog):
         return f'**Cases:** {cases:,}\n**Deaths:** {deaths:,}\n**Cases Today:** {today_cases}\n**Deaths Today:** {today_deaths}\n**Recovered:** {recovered:,}\n**Tests:** {tests:,}\n**Population:** {population:,}'    
 
     async def get_data_by_country(self, country):
+        cached_data = self.cache.get('covid19_country')
+        if (cached_data != None):
+            return cached_data
         data = requests.get(f'{self.covid_tracker_url}/countries/{country}')
+        self.cache.set('covid19_country', data.json())
         return data.json()
 
-    async def get_most_affected_countries(self, limit= 10): 
+    async def get_most_affected_countries(self, limit= 10):
+        cached_data = self.cache.get('covid19_most_affected')
+        if (cached_data != None):
+            return cached_data 
         countries = requests.get(f'{self.covid_tracker_url}/countries?sort=cases')
         countries = countries.json()
         if limit == 0:
+            self.cache.set('covid19_most_affected', countries)
             return countries
+        self.cache.set('covid19_most_affected', countries[:limit])    
         return countries[:limit]      
 
     @commands.command(

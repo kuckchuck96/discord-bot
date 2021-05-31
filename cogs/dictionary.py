@@ -2,9 +2,14 @@ import discord
 import requests
 import random
 import config
+import sys
+import utils
 
 from discord.ext import commands
 from config import default
+
+sys.path.append("../utils/")
+from cache import Cache
 
 
 class Dictionary(commands.Cog):
@@ -12,6 +17,24 @@ class Dictionary(commands.Cog):
         self.bot = bot
         config = default.config()
         self.urban_dictionary_api_url = config.urban_dictionary.api_url
+        self.cache = Cache(200, 30)
+
+    async def get_random_definitions(self, ctx):
+        cached_definitions = self.cache.get('urban_dictionary_random')
+        if (cached_definitions != None):
+            print('Fetching definitions from cache...')
+            random_word = cached_definitions['list'][random.randrange(0, len(cached_definitions['list']))]
+            word = random_word['word'].replace('[', '').replace(']', '')
+            definition = random_word['definition'].replace('[', '').replace(']', '')
+            await ctx.send(f'Random word from Urban Dictionary: \n**Word:** {word}\n**Definition:** {definition}')
+        else:
+            request_url = f'{self.urban_dictionary_api_url}/random'
+            res = requests.get(request_url)
+            self.cache.set('urban_dictionary_random', res.json())
+            res = res.json()['list'][random.randrange(0, len(res.json()['list']))]
+            word = res['word'].replace('[', '').replace(']', '')
+            definition = res['definition'].replace('[', '').replace(']', '')
+            await ctx.send(f'Random word from Urban Dictionary: \n**Word:** {word}\n**Definition:** {definition}')   
 
     @commands.command(
         name = 'define',
@@ -45,13 +68,9 @@ class Dictionary(commands.Cog):
     )
     async def random(self, ctx): 
         try:
-            request_url = f'{self.urban_dictionary_api_url}/random'
-            res = requests.get(request_url)
-            res = res.json()['list'][random.randrange(0, len(res.json()['list']))]
-            word = res['word'].replace('[', '').replace(']', '')
-            definition = res['definition'].replace('[', '').replace(']', '')
-            await ctx.send(f'Random word from Urban Dictionary: \n**Word:** {word}\n**Definition:** {definition}')
-        except Exception:
+            await self.get_random_definitions(ctx)
+        except Exception as err:
+            print(err)
             await ctx.send('Urban Dictionary API must be down.')         
 
 def setup(bot):
