@@ -27,7 +27,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         try:
-            await notify.notify_on_playing(self.bot, before, after)
+            await notify.notify_game_activity(self.bot, before, after)
         except Exception as err:
             print(err)            
         
