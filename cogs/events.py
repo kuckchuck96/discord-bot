@@ -21,7 +21,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_disconnect(self):
         print(f'Disconnected from discord...reconnecting...') 
-        self.helper.change_bot_presence(activity=discord.ActivityType.listening)
+        await self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
     @commands.Cog.listener()
     async def on_resumed(self):

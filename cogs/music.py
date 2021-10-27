@@ -147,7 +147,7 @@ class Music(commands.Cog):
     )
     async def get_queue(self, ctx):
         await ctx.send(
-            f'Up Next 🔜 **{self.songs_list[0].title}**' if len(self.songs_list) == 1 else '\n'.join([f'{i + 1}. **{s.title}**'  for (i, s) in enumerate(self.songs_list)])
+            f'Up Next ⏭️ **{self.songs_list[0].title}**' if len(self.songs_list) == 1 else '\n'.join([f'{i + 1}\u20E3 **{s.title}**'  for (i, s) in enumerate(self.songs_list)])
         ) if len(self.songs_list) > 0 else await ctx.send('No queued songs found!')
 
     @commands.command(name = 'volume',
@@ -171,7 +171,7 @@ class Music(commands.Cog):
         self.stop_monitor()
 
         # Reset bot presence.
-        self.helper.change_bot_presence(activity=discord.ActivityType.listening)
+        await self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
     # @play.before_invoke
     #@yt.before_invoke
@@ -185,7 +185,9 @@ class Music(commands.Cog):
                 raise commands.CommandError("Author not connected to a voice channel.")
         elif any([ctx.voice_client.is_playing(), ctx.voice_client.is_paused()]):
             msg = await ctx.send('Queued: **{0}**'.format(re.compile('\s+').split(ctx.message.content, 1)[1].capitalize()))
-            await msg.add_reaction('⏳')
+            emojis = ['⏳', f'{len(self.songs_list) + 1}\u20E3']
+            for e in emojis:
+                await msg.add_reaction(e)
 
     @tasks.loop(seconds=2.5)
     async def monitor(self):
