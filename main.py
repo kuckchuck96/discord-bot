@@ -3,7 +3,7 @@ import os
 import config
 import sys
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from discord.ext import commands
 from config import default
 
@@ -11,7 +11,7 @@ from config import default
 sys.path.append("./utils/")
 
 # Commented for heroku deployment
-load_dotenv()
+# load_dotenv()
 print('Loading config...')
 config = default.config()
 
