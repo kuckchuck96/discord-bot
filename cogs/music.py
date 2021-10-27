@@ -170,6 +170,9 @@ class Music(commands.Cog):
         self.songs_list = []
         self.stop_monitor()
 
+        # Reset bot presence.
+        self.helper.change_bot_presence(activity=discord.ActivityType.listening)
+
     # @play.before_invoke
     #@yt.before_invoke
     @stream.before_invoke
