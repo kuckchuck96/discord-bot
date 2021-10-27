@@ -3,11 +3,13 @@ import utils
 
 from discord.ext import commands
 from utils import notify
+from utils.Helper import Helper
 
 
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.helper = Helper(bot)
 
     @commands.Cog.listener()
     async def on_connect(self):
@@ -19,6 +21,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_disconnect(self):
         print(f'Disconnected from discord...reconnecting...') 
+        self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
     @commands.Cog.listener()
     async def on_resumed(self):
