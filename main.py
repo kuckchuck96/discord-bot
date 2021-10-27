@@ -11,12 +11,12 @@ from config import default
 sys.path.append("./utils/")
 
 # Commented for heroku deployment
-# load_dotenv()
+load_dotenv()
 print('Loading config...')
 config = default.config()
 
 print("Initializing...")
-bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None)
+# bot = commands.Bot(command_prefix= config.bot_prefix, help_command=None)
 
 # Enable bot with intents support
 if config.enable_all_intents and os.getenv('INTENTS_SUPPORTED') == 'true':
