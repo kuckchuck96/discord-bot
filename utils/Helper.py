@@ -1,4 +1,5 @@
 import discord
+import math
 
 
 class Helper:
@@ -14,3 +15,13 @@ class Helper:
                 name=name
             )
         )
+    
+    def convert_views(views) -> str:
+        pos = {
+            'K': int(math.pow(10, 3)),
+            'M': int(math.pow(10, 6)),
+            'B': int(math.pow(10, 9)),
+            'T': int(math.pow(10, 12))
+        }
+
+        return list(filter(lambda x: int(x[:-1]) > 0, [f'{views // pos[i]}{i}' for i in pos.keys()]))[-1]

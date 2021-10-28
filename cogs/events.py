@@ -21,7 +21,6 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_disconnect(self):
         print(f'Disconnected from discord...reconnecting...') 
-        await self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
     @commands.Cog.listener()
     async def on_resumed(self):
@@ -36,7 +35,7 @@ class Events(commands.Cog):
         
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='lasangiri'))
+        await self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
         if self.bot.user.avatar == None:
             image_path = 'images/garlic_icon.png'

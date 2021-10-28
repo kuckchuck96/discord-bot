@@ -9,6 +9,7 @@ from discord.ext import commands, tasks
 
 from utils.Helper import Helper
 
+
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -79,7 +80,7 @@ class Music(commands.Cog):
         )
         embed.set_thumbnail(url= player.thumbnail)
         embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
-        embed.add_field(name='Views', value=player.views)
+        embed.add_field(name='Views', value=f'{Helper.convert_views(player.views)}+')
         embed.add_field(name='Duration', value=f'{round(int(player.duration)/60, 1)} mins')
         # embed.add_field(name= '\u200b', value= playing_title)  
         embed.set_author(name=player.upload_by, url=player.uploader_url)
@@ -122,8 +123,10 @@ class Music(commands.Cog):
     async def pause(self,ctx):
         if ctx.voice_client is None:
             return await ctx.send("Not connected to a voice channel.")
-        await ctx.message.add_reaction('⏯')    
-        ctx.voice_client.pause()
+        
+        if not ctx.voice_client.is_paused():
+            await ctx.message.add_reaction('⏯')    
+            ctx.voice_client.pause()
 
     @commands.command(name = 'resume',
         aliases = ['rs'],
@@ -131,8 +134,10 @@ class Music(commands.Cog):
     async def resume(self,ctx):
         if ctx.voice_client is None:
             return await ctx.send("Not connected to a voice channel.")
-        await ctx.message.add_reaction('⏯')    
-        ctx.voice_client.resume()
+
+        if ctx.voice_client.is_paused():
+            await ctx.message.add_reaction('⏯')    
+            ctx.voice_client.resume()
 
     @commands.command(
         help='Jump to the next song if any.'
@@ -185,8 +190,7 @@ class Music(commands.Cog):
                 raise commands.CommandError("Author not connected to a voice channel.")
         elif any([ctx.voice_client.is_playing(), ctx.voice_client.is_paused()]):
             msg = await ctx.send('Queued: **{0}**'.format(re.compile('\s+').split(ctx.message.content, 1)[1].capitalize()))
-            emojis = ['⏳', f'{len(self.songs_list) + 1}\u20E3']
-            for e in emojis:
+            for e in ['⏳', f'{len(self.songs_list) + 1}\u20E3']:
                 await msg.add_reaction(e)
 
     @tasks.loop(seconds=2.5)
