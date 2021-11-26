@@ -3,11 +3,13 @@ import utils
 
 from discord.ext import commands
 from utils import notify
+from utils.Helper import Helper
 
 
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.helper = Helper(bot)
 
     @commands.Cog.listener()
     async def on_connect(self):
@@ -33,7 +35,7 @@ class Events(commands.Cog):
         
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name='lasangiri'))
+        await self.helper.change_bot_presence(activity=discord.ActivityType.listening)
 
         if self.bot.user.avatar == None:
             image_path = 'images/garlic_icon.png'
