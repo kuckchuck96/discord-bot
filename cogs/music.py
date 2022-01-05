@@ -79,7 +79,7 @@ class Music(commands.Cog):
             url = player.webpage_url
         )
         embed.set_thumbnail(url= player.thumbnail)
-        embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
+        # embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
         embed.add_field(name='Views', value=f'{Helper.convert_views(player.views)}+')
         embed.add_field(name='Duration', value=f'{round(int(player.duration)/60, 1)} mins')
         # embed.add_field(name= '\u200b', value= playing_title)  
