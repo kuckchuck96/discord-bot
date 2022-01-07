@@ -48,6 +48,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.upload_by = data.get('uploader')
         self.uploader_url = data.get('uploader_url')
         self.duration = data.get('duration')
+        self.likes = data.get('like_count')
 
     @classmethod
     async def from_url(cls, url, *, loop=None, stream=False):
@@ -79,9 +80,13 @@ class Music(commands.Cog):
             url = player.webpage_url
         )
         embed.set_thumbnail(url= player.thumbnail)
-        # embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
-        embed.add_field(name='Views', value=f'{Helper.convert_views(player.views)}+')
-        embed.add_field(name='Duration', value=f'{round(int(player.duration)/60, 1)} mins')
+        # Removing ratings since youtube-dl is no longer providing it :(.
+        # if (player.rating is not None):
+        #     embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
+        if player.likes is not None:
+            embed.add_field(name='Likes 👍', value=f'{Helper.convert_views(player.likes)}+')
+        embed.add_field(name='Views 👁️', value=f'{Helper.convert_views(player.views)}+')
+        embed.add_field(name='Duration ⏱', value=f'{round(int(player.duration)/60, 1)} mins')
         # embed.add_field(name= '\u200b', value= playing_title)  
         embed.set_author(name=player.upload_by, url=player.uploader_url)
 
