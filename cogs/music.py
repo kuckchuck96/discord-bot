@@ -81,12 +81,14 @@ class Music(commands.Cog):
         )
         embed.set_thumbnail(url= player.thumbnail)
         # Removing ratings since youtube-dl is no longer providing it :(.
-        # if (player.rating is not None):
-        #     embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
-        if player.likes is not None:
+        if player.rating != None:
+            embed.add_field(name='Rating', value='⭐' * math.floor(player.rating))
+        if player.likes != None:
             embed.add_field(name='Likes 👍', value=f'{Helper.convert_views(player.likes)}+')
-        embed.add_field(name='Views 👁️', value=f'{Helper.convert_views(player.views)}+')
-        embed.add_field(name='Duration ⏱', value=f'{round(int(player.duration)/60, 1)} mins')
+        if player.views != None:
+            embed.add_field(name='Views 👁️', value=f'{Helper.convert_views(player.views)}+')
+        if player.duration != None:
+            embed.add_field(name='Duration ⏱', value=f'{round(int(player.duration)/60, 1)} mins')
         # embed.add_field(name= '\u200b', value= playing_title)  
         embed.set_author(name=player.upload_by, url=player.uploader_url)
 
