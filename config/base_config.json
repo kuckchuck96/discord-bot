@@ -1,0 +1,40 @@
+{
+    "bot_prefix": ">",
+    "urban_dictionary": {
+        "api_url": "https://api.urbandictionary.com/v0"
+    },
+    "r6stats": {
+        "api_url": "https://api2.r6stats.com/public-api",
+        "api_key": ""
+    },
+    "disney": {
+        "public_key": "",
+        "private_key": "",
+        "ts": 1,
+        "marvel_api_url": "https://gateway.marvel.com:443/v1/public/characters",
+        "sw_api_url": "https://swapi.dev/api/people"
+    },
+    "facts": {
+        "number_api_url": "http://numbersapi.com/random/trivia",
+        "doggo_api_url": "https://api.thedogapi.com/v1/images/search"
+    },
+    "jokes": {
+        "norris_api_url": "https://api.chucknorris.io/jokes/random",
+        "dadjoke_api_url": "https://icanhazdadjoke.com"
+    },
+    "news": {
+        "api_url": "https://newsapi.org/v2/top-headlines",
+        "api_key": ""
+    },
+    "tenor": {
+        "api_url": "https://g.tenor.com/v1/search",
+        "api_key": ""
+    },
+    "enable_all_intents": true,
+    "covid_tracker": {
+        "api_url": "https://corona.lmao.ninja/v2"
+    },
+    "cowinapi": {
+        "findbypin": "https://zggtijv51g.execute-api.ap-south-1.amazonaws.com/default/vaccineMetadataFunction"
+    }
+}
